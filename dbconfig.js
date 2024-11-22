@@ -1,5 +1,5 @@
 const dbConfig = {
-    user: "admin",
+    user: "admin_student_sys",
     password: "admin",
     connectString: "localhost:1521/xe",
 };
