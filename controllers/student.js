@@ -81,7 +81,9 @@ exports.studentLogin=async(req,res)=>{
         }
         const student=result.rows[0]
 
-        const token=await jwt.sign({user_id,username},process.env.JWT_SECRET,{expiresIn:'2h'})
+        const role='Student'
+
+        const token=await jwt.sign({user_id,username,role},process.env.JWT_SECRET,{expiresIn:'2h'})
         
         res.status(201).json({ message: 'Login Successful !',student,token });
     } catch (error) {
