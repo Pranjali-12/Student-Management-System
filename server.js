@@ -1,10 +1,10 @@
 const express = require("express");
 const oracledb = require("oracledb");
 const dbConfig = require("./dbconfig");
+const dotenv=require('dotenv')
 
 const app = express();
-const PORT = 3000;
-
+dotenv.config();
 
 async function initializeOracleConnection() {
   try {
@@ -33,6 +33,6 @@ app.get("/", (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });
