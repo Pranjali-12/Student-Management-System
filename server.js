@@ -22,8 +22,11 @@ app.use(express.json());
 
 const userRoutes=require('./routes/user')
 const studentRoutes=require('./routes/student')
+const trainerRoutes=require('./routes/trainer')
+
 app.use('/user',userRoutes)
 app.use('/student',studentRoutes)
+app.use('/trainer',trainerRoutes)
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Oracle Connection Server!");

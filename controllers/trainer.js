@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const oracledb = require("oracledb");
 const dbConfig = require("../dbconfig");
 
@@ -11,8 +10,9 @@ async function connectDB() {
     }
 }
 
-exports.studentRegistration = async (req, res) => {
-    const { username, firstname, lastname, contact, city, department } = req.body;
+exports.trainerRegistration = async (req, res) => {
+    const { username, firstname, lastname, contact, department } = req.body;
+    console.log(req.body)
 
     try {
 
@@ -24,7 +24,7 @@ exports.studentRegistration = async (req, res) => {
 
         const id_query = `SELECT USER_ID FROM USERS WHERE USERNAME = :username`
         const id = await connection.execute(id_query, [username]);
-
+    
         if (!id.rows[0]) {
             return res.status(400).json({ message: 'User not exist' });
         }
@@ -32,19 +32,19 @@ exports.studentRegistration = async (req, res) => {
         console.log(id.rows[0][0])
         const user_id = id.rows[0][0];
 
-        const checkQuery = `SELECT COUNT(*) AS COUNT FROM STUDENTS WHERE USER_ID = :id`;
+        const checkQuery = `SELECT COUNT(*) AS COUNT FROM TRAINERS WHERE USER_ID = :id`;
         const result = await connection.execute(checkQuery, [user_id]);
 
         if (result.rows[0][0] > 0) {
             return res.status(400).json({ message: 'Student already exists' });
         }
 
-        const query = `INSERT INTO STUDENTS (STUDENT_ID,USER_ID,FIRST_NAME,LAST_NAME,CONTACT,CITY,DEPARTMENT) VALUES ('S' || STUDENT_SEQ.NEXTVAL,:user_id, :firstname, :lastname, :contact, :city, :department )`
+        const query = `INSERT INTO TRAINERS (TRAINER_ID,USER_ID,FIRST_NAME,LAST_NAME,CONTACT,DEPARTMENT) VALUES ('T' || TRAINER_SEQ.NEXTVAL,:user_id, :firstname, :lastname, :contact, :department )`
 
 
-        await connection.execute(query, [user_id, firstname, lastname, contact, city, department], { autoCommit: true });
+        await connection.execute(query, [user_id, firstname, lastname, contact, department], { autoCommit: true });
 
-        res.status(201).json({ message: 'Student registered successfully' });
+        res.status(201).json({ message: 'Trainer registered successfully' });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).json({ message: 'Internal server error' });
