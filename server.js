@@ -25,12 +25,14 @@ const studentRoutes=require('./routes/student')
 const trainerRoutes=require('./routes/trainer')
 const courseRoutes=require('./routes/course')
 const enrollRoutes=require('./routes/enrollment')
+const gradeRoutes=require('./routes/grade')
 
 app.use('/user',userRoutes)
 app.use('/student',studentRoutes)
 app.use('/trainer',trainerRoutes)
 app.use('/course',courseRoutes)
 app.use('/enrollment',enrollRoutes)
+app.use('/grade',gradeRoutes)
 
 app.get("/", (req, res) => {
   res.send("Welcome to the Oracle Connection Server!");

@@ -9,7 +9,7 @@ async function connectDB() {
         console.error("Error establishing database connection:", error);
         throw error;
     }
-}
+} 
 
 exports.trainerRegistration = async (req, res) => {
     const { username, firstname, lastname, contact, department } = req.body;
