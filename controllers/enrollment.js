@@ -58,3 +58,27 @@ exports.enrollCourse = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
+exports.enrolledCourses=async(req,res)=>{
+    const {user_id}=req.user
+
+    try {
+        const connection = await connectDB();
+
+        if (!connection) {
+            throw new Error('Database connection not established');
+        }
+
+        const query = `SELECT C.COURSE_ID,C.COURSE_NAME,C.TRAINER_ID FROM COURSES C JOIN ENROLLMENTS E ON C.COURSE_ID=E.COURSE_ID WHERE E.STUDENT_ID=(SELECT STUDENT_ID FROM STUDENTS WHERE STUDENTS.USER_ID=:user_id)`
+
+        const result = await connection.execute(query,[user_id],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+        console.log(result)
+        res.status(201).json(result.rows );
+
+    } catch (error) {
+        console.error('Error while fetching enrolled courses:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}

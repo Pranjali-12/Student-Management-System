@@ -48,3 +48,24 @@ exports.addCourse = async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+exports.getAllCourses = async (req, res) => {
+    try {
+        const connection = await connectDB();
+
+        if (!connection) {
+            throw new Error('Database connection not established');
+        }
+
+        const query = `SELECT * FROM COURSES`
+
+        const result = await connection.execute(query,[],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+        console.log(result)
+        res.status(201).json(result.rows );
+
+    } catch (error) {
+        console.error('Error while fetching all courses:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+}
