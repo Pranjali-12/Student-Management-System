@@ -76,6 +76,12 @@ exports.studentLogin=async(req,res)=>{
         const student_query=`SELECT U.USERNAME,S.FIRST_NAME,S.LAST_NAME,S.CONTACT,S.CITY,S.DEPARTMENT,S.ADMISSION_DATE FROM USERS U JOIN STUDENTS S ON S.USER_ID = U.USER_ID WHERE S.USER_ID=:user_id`
 
         const result=await connection.execute(student_query,[user_id],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+
+        // By nested query
+        // const student_query=`SELECT U.USERNAME,S.FIRST_NAME,S.LAST_NAME,S.CONTACT,S.CITY,S.DEPARTMENT,S.ADMISSION_DATE FROM USERS U JOIN STUDENTS S ON S.USER_ID = U.USER_ID WHERE S.USER_ID=(SELECT USER_ID FROM USERS WHERE USERNAME=:username AND PASSWORD=:password)`
+
+        // const result=await connection.execute(student_query,[username,password],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
         if (!result.rows[0]) {
             return res.status(400).json({ message: 'Student not exist' });
         }

@@ -76,6 +76,12 @@ exports.trainerLogin=async(req,res)=>{
         const trainer_query=`SELECT U.USERNAME,T.FIRST_NAME,T.LAST_NAME,T.CONTACT,T.DEPARTMENT,T.HIRED_DATE FROM USERS U JOIN Trainers T ON T.USER_ID = U.USER_ID WHERE T.USER_ID=:user_id`
 
         const result=await connection.execute(trainer_query,[user_id],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
+
+        // By nested query
+        // const trainer_query=`SELECT U.USERNAME,T.FIRST_NAME,T.LAST_NAME,T.CONTACT,T.DEPARTMENT,T.HIRED_DATE FROM USERS U JOIN TRAINERS T ON T.USER_ID = U.USER_ID WHERE T.USER_ID=(SELECT USER_ID FROM USERS WHERE USERNAME=:username AND PASSWORD=:password)`
+
+        // const result=await connection.execute(trainer_query,[username,password],{ outFormat: oracledb.OUT_FORMAT_OBJECT })
+        
         if (!result.rows[0]) {
             return res.status(400).json({ message: 'Trainer not exist' });
         }
